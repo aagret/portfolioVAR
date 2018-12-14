@@ -1,0 +1,21 @@
+{
+    "collab_server" : "",
+    "contents" : "\nlibrary(Rblpapi)\nlibrary(data.table)\nlibrary(plyr)\nlibrary(reshape2)\nlibrary(quantmod)\nlibrary(PerformanceAnalytics)\n\nticker <- read.csv(\"tickers.csv\", sep=\",\", header = FALSE)\nticker <- as.character(ticker[,1])\n\n\ncon <- blpConnect()\n\n# ovr <- c(\"Eqy_Fund_Crncy\" = \"EUR\")\nopt <- c(\"periodicitySelection\"=\"DAILY\",\n         \"adjustmentFollowDPDF\"=\"FALSE\",\n         \"adjustmentAbnormal\"=\"TRUE\",\n         \"adjustmentSplit\"=\"TRUE\",\n         \"adjustmentNormal\"=\"TRUE\")\n\nhistoPx <- bdh(ticker,\n               c(\"Px_Last\"),\n               start.date = as.Date(\"1999-12-31\"),\n               end.date = Sys.Date(),\n                options= opt)\n\nFx <- cbind(ticker, \n            bdp(ticker, c(\"Crncy\")))\n          \nhistoPx <- ldply(histoPx, data.frame)\ncolnames(histoPx)[1] <- \"ticker\"\n\nhistoPx <- merge(histoPx, Fx,  by=  \"ticker\")\nhistoPx <- data.table(histoPx, key= \"date\")\n\nhistoPx[Crncy == \"GBp\", Crncy:= toupper(Crncy)]\n\nFx <- unique(histoPx[Crncy != \"EUR\", Crncy])\n\nFxTicker <- paste0(Fx, \"EUR Curncy\")\nFx <- bdh(FxTicker,\n          c(\"Px_Last\"),\n          start.date = as.Date(\"1999-12-31\"),\n          end.date = Sys.Date(),\n          options= opt)\n\nFx <- ldply(Fx, data.frame)\nFx <- data.table(Fx, key= \"date\")\n\nFx[, .id:= sub(\"EUR Curncy\",\"\",.id)]\ncolnames(Fx)[1] <- \"Crncy\"\n\nblpDisconnect(con)\n\nsetkey(histoPx, date, Crncy)\nsetkey(Fx, date, Crncy)\n\nhistoPx <- Fx[histoPx]\nhistoPx[is.na(Px_Last), Px_Last:= 1]\n\nhistoPx[, Px_Last:= Px_Last * i.Px_Last]\nhistoPx[Crncy == \"GBP\", Px_Last:= Px_Last / 100]\n\nserie <- histoPx[, .(date, ticker, Px_Last)]\nserie <- dcast(serie, date ~ticker)\n\nsetDT(serie)\nserie <- serie[, lapply(.SD, function(x) na.locf(x, na.rm= FALSE))]\nserie <- serie[complete.cases(serie)]\n\nserie <- xts(serie[,-1, drop=FALSE], order.by = serie$date)\n\n\nreturn <- ROC(serie, type=\"discrete\")[-1]\n\na <- VaR(return, p=0.99, weights= NULL, \n    portfolio_method = \"component\", method = \"modified\",\n    na.rm= TRUE)\n\n\n",
+    "created" : 1502433654526.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "2168626423",
+    "id" : "5E02DC59",
+    "lastKnownWriteTime" : 1503989384,
+    "last_content_update" : 1503989384709,
+    "path" : "~/portfolio/code.R",
+    "project_path" : "code.R",
+    "properties" : {
+        "tempName" : "Untitled1"
+    },
+    "relative_order" : 1,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

@@ -1,0 +1,22 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1544783899121.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "A81FE894",
+    "lastKnownWriteTime" : 1503989384,
+    "last_content_update" : 1503989384,
+    "path" : "M:/Alexandre/R-Projects/DharmaPortfolioVAR/PortfolioVAR.R",
+    "project_path" : "PortfolioVAR.R",
+    "properties" : {
+        "cursorPosition" : "79,0",
+        "scrollLine" : "35"
+    },
+    "relative_order" : 6,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

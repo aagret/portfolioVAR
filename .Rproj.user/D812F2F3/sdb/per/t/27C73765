@@ -1,0 +1,29 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1502457473391.000,
+    "dirty" : false,
+    "encoding" : "",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "27C73765",
+    "lastKnownWriteTime" : 27303364806049904,
+    "last_content_update" : 1502457473391,
+    "path" : null,
+    "project_path" : null,
+    "properties" : {
+        "cacheKey" : "359FDB52",
+        "caption" : "histoPx",
+        "contentUrl" : "grid_resource/gridviewer.html?env=&obj=histoPx&cache_key=359FDB52",
+        "displayedObservations" : "243766",
+        "environment" : "",
+        "object" : "histoPx",
+        "preview" : "0",
+        "totalObservations" : "243766",
+        "variables" : "5"
+    },
+    "relative_order" : 3,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_dataframe"
+}
